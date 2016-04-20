@@ -1,4 +1,4 @@
-name: "javajersey"
+name: "jersey-mysql-redis"
 description: "A sample java jersey stack"
 template:
   type: "git"
