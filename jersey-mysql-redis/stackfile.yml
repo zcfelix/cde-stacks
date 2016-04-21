@@ -41,17 +41,18 @@ services:
         command: "exit 0"
         interval: "3"
         timeout: "2"
+    environment:
+      DB_NAME: 'data_store'
   db:
     mem: 256
     instances: 1
     cpus: 0.2
-    image: tutum/mysql
+    image: "mysql"
     environment:
-      MYSQL_PASS: "mysql"
+      MYSQL_ROOT_PSSWORD: "mysql"
       MYSQL_USER: "mysql"
       MYSQL_PASSWORD: "mysql"
-      ON_CREATE_DB: "stacks"
-      EXTRA_OPTS: "--lower_case_table_names=1"
+      MYSQL_DATABASE: "data_store"
     expose: 3306
     volumes:
       - data:/var/lib/mysql
