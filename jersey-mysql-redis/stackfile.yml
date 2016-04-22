@@ -21,11 +21,11 @@ tools:
 services:
   web:
     build:
-      image: '192.168.99.100:5000/javajersey-build'
+      image: 'hub.deepi.cn/javajersey-build'
       mem: 512
       cpus: 0.5
     verify:
-      image: '192.168.99.100:5000/javajersey-verify'
+      image: 'hub.deepi.cn/javajersey-verify'
       mem: 512
       cpus: 0.5
     main: yes
@@ -44,23 +44,25 @@ services:
     environment:
       DB_NAME: 'data_store'
   db:
-    mem: 256
+    mem: 512
     instances: 1
     cpus: 0.2
-    image: "mysql"
+    image: "tutum/mysql"
     environment:
-      MYSQL_ROOT_PSSWORD: "mysql"
+      MYSQL_ROOT_PASSWORD: "mysql"
       MYSQL_USER: "mysql"
+      MYSQL_PASS: "mysql"
       MYSQL_PASSWORD: "mysql"
       MYSQL_DATABASE: "data_store"
+      EXTRA_OPTS: "--lower_case_table_names=1"
     expose: 3306
     volumes:
-      - data:/var/lib/mysql
+      - db:/var/lib/mysql
     health:
       - protocol: "COMMAND"
+        command: "exit 0"
         interval: "3"
         timeout: "2"
-        command: "exit 0"
   redis:
     mem: 256
     instances: 1
@@ -68,7 +70,7 @@ services:
     image: redis
     expose: 6379
     volumes:
-      - data:/data
+      - redis:/data
     health:
       - protocol: "COMMAND"
         interval: "3"
