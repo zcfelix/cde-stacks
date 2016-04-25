@@ -1,0 +1,33 @@
+name: "react-webpack"
+description: "A react webpack stack"
+template:
+  type: "git"
+  uri: 'https://github.com/aisensiy/javajersey_api.git'
+tags:
+    - "react"
+languages:
+  - name: "react"
+frameworks:
+  - name: "react"
+tools:
+  - name: "webpack"
+services:
+  web:
+    build:
+      image: 'hub.deepi.cn/react-build'
+      mem: 512
+      cpus: 0.5
+    verify:
+      image: 'hub.deepi.cn/react-verify'
+      mem: 512
+      cpus: 0.5
+    main: yes
+    mem: 512
+    cpus: 0.4
+    instances: 1
+    expose: 80
+    health:
+      - protocol: "COMMAND"
+        command: "exit 0"
+        interval: "3"
+        timeout: "2"
