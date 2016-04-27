@@ -52,6 +52,7 @@ services:
       MYSQL_ROOT_PASSWORD: "mysql"
       MYSQL_USER: "mysql"
       MYSQL_PASS: "mysql"
+      ON_CREATE_DB: "data_store"
       MYSQL_PASSWORD: "mysql"
       MYSQL_DATABASE: "data_store"
       EXTRA_OPTS: "--lower_case_table_names=1"
