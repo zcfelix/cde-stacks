@@ -1,0 +1,57 @@
+name: "rails-mongodb2"
+description: "A rails app with mongodb"
+template:
+  type: "git"
+  uri: 'https://github.com/aisensiy/rails-with-mongoid-template.git'
+tags:
+    - "java"
+languages:
+  - name: "ruby"
+frameworks:
+  - name: "rails"
+  - name: "rspec"
+  - name: "cucumber"
+tools:
+services:
+  web:
+    build:
+      image: 'hub.deepi.cn/rails-build'
+      mem: 512
+      cpus: 0.5
+    verify:
+      image: 'hub.deepi.cn/rails-verify'
+      mem: 512
+      cpus: 0.5
+    main: yes
+    mem: 512
+    cpus: 0.4
+    instances: 1
+    links:
+      - mongo
+    expose: 8088
+    health:
+      - protocol: "COMMAND"
+        command: "exit 0"
+        interval: "3"
+        timeout: "2"
+    environment:
+      MONGO_NAME: 'mongodb_store'
+      MONGO_USERNAME: 'admin'
+      MONGO_PASSWORD: 'mypass'
+  mongo:
+    mem: 512
+    instances: 1
+    cpus: 0.2
+    image: "tutum/mongodb"
+    environment:
+      MONGODB_PASS: "mypass"
+      MONGODB_USER: "admin"
+      MONGODB_DATABASE: "mongodb_store"
+    expose: 27017
+    volumes:
+      - mongo:/var/lib/mongodb
+    health:
+      - protocol: "COMMAND"
+        command: "exit 0"
+        interval: "3"
+        timeout: "2"
