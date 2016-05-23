@@ -1,3 +1,6 @@
 [submodule "flask/template"]
   path = flask/template
   url = https://github.com/aisensiy/cde-flask-init-project.git
+[submodule "jersey-mysql/template"]
+	path = jersey-mysql/template
+	url = https://github.com/aisensiy/cde-jersey-mysql-init-project.git
