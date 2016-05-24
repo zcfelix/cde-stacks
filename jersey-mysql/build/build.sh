@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# builder 在调用 stack 的 build image 时会传入如下一些环境变量
+# APP_NAME:  应用的名称
+# CODEBASE:  应用代码的目录
+# CACHE_DIR: build image 可以使用这个目录来缓存build过程中的文件,比如maven的jar包,用来加速整个build流程
+# IMAGE:     build 成功之后image的名称
+
 set -eo pipefail
 
 on_exit() {
@@ -30,6 +36,8 @@ on_exit() {
 }
 
 trap on_exit HUP INT TERM QUIT ABRT EXIT
+
+# 在将 java 打包为 jar 之前首先执行项目的单元测试，那么在执行测试之前需要安装单元测试所依赖的数据
 
 HOST_IP=$(ip route|awk '/default/ { print $3 }')
 
