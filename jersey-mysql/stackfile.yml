@@ -37,6 +37,13 @@ services:
       DB_NAME: 'data_store'
       DB_USERNAME: 'mysql'
       DB_PASSWORD: 'mysql'
+    health:
+      - protocol: "TCP"
+        portIndex: 0
+        interval: 3
+        timeout: 2
+        grace: 2
+        maxConsecutiveFailures: 2
   db:
     mem: 512
     instances: 1
@@ -53,3 +60,10 @@ services:
     expose: 3306
     volumes:
       - db:/var/lib/mysql
+    health:
+      - protocol: "TCP"
+        portIndex: 0
+        interval: 3
+        timeout: 2
+        grace: 2
+        maxConsecutiveFailures: 2
