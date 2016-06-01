@@ -25,6 +25,8 @@ services:
     cpus: 0.4
     instances: 1
     expose: 5000
+    volumes:
+      - db:/data
     health:
       - protocol: "COMMAND"
         command: "exit 0"
