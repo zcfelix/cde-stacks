@@ -81,7 +81,7 @@ echo "Generate standalone Complete"
 (cat  <<'EOF'
 #!/bin/sh
 
-export DATABASE="jdbc:mysql://127.0.0.1:$DB_PORT/$DB_NAME?user=$DB_USERNAME&password=$DB_PASSWORD&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&createDatabaseIfNotExist=true"
+export DATABASE="jdbc:mysql://$DB_HOST:$DB_PORT/$DB_NAME?user=$DB_USERNAME&password=$DB_PASSWORD&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&createDatabaseIfNotExist=true"
 flyway migrate -url="$DATABASE" -locations=filesystem:`pwd`/dbmigration -baselineOnMigrate=true -baselineVersion=0
 [ -d `pwd`/initmigration  ] && flyway migrate -url="$DATABASE" -locations=filesystem:`pwd`/initmigration -table="init_version" -baselineOnMigrate=true -baselineVersion=0
 java -jar app-standalone.jar
