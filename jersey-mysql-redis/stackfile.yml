@@ -43,6 +43,8 @@ services:
         timeout: "2"
     environment:
       DB_NAME: 'data_store'
+      DB_USERNAME: 'mysql'
+      DB_PASSWORD: 'mysql'
   db:
     mem: 512
     instances: 1
