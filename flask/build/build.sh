@@ -7,14 +7,7 @@ cd $CODEBASE_DIR
 echo 'write Dockerfile'
 
 (cat << EOF
-FROM hub.deepi.cn/synapse:0.1
-
-RUN apk add --no-cache python && \
-    python -m ensurepip && \
-    rm -r /usr/lib/python*/ensurepip && \
-    pip install --upgrade pip setuptools && \
-    rm -r /root/.cache
-
+FROM python:2.7
 
 ENV APP_HOME /myapp
 RUN mkdir \$APP_HOME
