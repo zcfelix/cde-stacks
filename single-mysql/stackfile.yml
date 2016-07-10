@@ -1,0 +1,26 @@
+name: "mysql"
+description: "A mysql"
+services:
+  db:
+    mem: 512
+    instances: 1
+    cpus: 0.2
+    image: "tutum/mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: "mysql"
+      MYSQL_USER: "mysql"
+      MYSQL_PASS: "mysql"
+      ON_CREATE_DB: "data_store"
+      MYSQL_PASSWORD: "mysql"
+      MYSQL_DATABASE: "data_store"
+      EXTRA_OPTS: "--lower_case_table_names=1"
+    expose: 3306
+    volumes:
+      - db:/var/lib/mysql
+    health:
+      - protocol: "TCP"
+        portIndex: 0
+        interval: 3
+        timeout: 2
+        grace: 2
+        maxConsecutiveFailures: 2
