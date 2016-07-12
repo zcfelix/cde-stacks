@@ -12,3 +12,5 @@ RUN curl -sjkSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-$DOCKER_VER
 
 ADD build.sh build.sh
 RUN chmod a+x build.sh
+
+RUN apk add --no-cache --update git
