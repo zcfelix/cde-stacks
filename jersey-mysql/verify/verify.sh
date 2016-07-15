@@ -28,12 +28,6 @@ cd $CODEBASE
 
 echo
 echo "Building verify jar..."
-GRADLE_USER_HOME="$CACHE_DIR" gradle itestJar &>process.log
+ENTRYPOINT=http://$ENDPOINT GRADLE_USER_HOME="$CACHE_DIR" gradle itest &>process.log
 echo "Build verify finished"
-echo
-
-echo
-echo "Start verify"
-ENTRYPOINT=http://$ENDPOINT java -jar build/libs/verify-standalone.jar
-echo "Verify finished"
 echo
