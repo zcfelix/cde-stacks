@@ -25,9 +25,10 @@ on_exit() {
 trap on_exit HUP INT TERM QUIT ABRT EXIT
 
 cd $CODEBASE
-
+ENDPOINT_HOST=$(echo $LAMBDA|jq --raw-output '.services.web.endpoint.internal.host')
+ENDPOINT_PORT=$(echo $LAMBDA|jq --raw-output '.services.web.endpoint.internal.port')
 echo
 echo "Building verify jar..."
-ENTRYPOINT=http://$ENDPOINT GRADLE_USER_HOME="$CACHE_DIR" gradle itest &>process.log
+ENDPOINT="http://$ENDPOINT_HOST:$ENDPOINT_PORT" GRADLE_USER_HOME="$CACHE_DIR" gradle itest 
 echo "Build verify finished"
 echo
