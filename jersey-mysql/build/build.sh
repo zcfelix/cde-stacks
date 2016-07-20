@@ -79,7 +79,13 @@ GRADLE_USER_HOME="$CACHE_DIR" gradle standaloneJar &>process.log
 echo "Generate standalone Complete"
 
 (cat  <<'EOF'
-#!/bin/sh
+#!/bin/bash
+set -eo pipefail
+
+until nc -z -w 5 $DB_HOST $DB_PORT; do
+    echo "...."
+    sleep 1
+done
 
 export DATABASE="jdbc:mysql://$DB_HOST:$DB_PORT/$DB_NAME?user=$DB_USERNAME&password=$DB_PASSWORD&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&createDatabaseIfNotExist=true"
 flyway migrate -url="$DATABASE" -locations=filesystem:`pwd`/dbmigration -baselineOnMigrate=true -baselineVersion=0
