@@ -1,5 +1,7 @@
 FROM hub.deepi.cn/gradle:0.1
 
+RUN apk --update add gcc jq
+
 ENTRYPOINT ["./verify.sh"]
 
 WORKDIR /home
