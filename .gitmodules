@@ -4,3 +4,6 @@
 [submodule "jersey-mysql/template"]
 	path = jersey-mysql/template
 	url = https://github.com/aisensiy/cde-jersey-mysql-init-project.git
+[submodule "jersey-mongo/template"]
+	path = jersey-mongo/template
+	url = https://github.com/tw-cde/jersey-mongo-init.git
