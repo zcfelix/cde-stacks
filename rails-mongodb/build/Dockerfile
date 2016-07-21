@@ -4,7 +4,7 @@ ENTRYPOINT ["./build.sh"]
 
 RUN apk update && apk upgrade && apk --update add \
     ruby ruby-irb ruby-rake ruby-io-console ruby-bigdecimal \
-    libstdc++ tzdata bash curl
+    libstdc++ tzdata bash curl git
 
 ENV DOCKER_BUCKET get.docker.com
 ENV DOCKER_VERSION 1.9.1
