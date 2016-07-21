@@ -1,0 +1,65 @@
+name: "jersey-mongo"
+description: "A sample java jersey mongo stack"
+template:
+  type: "git"
+  uri: 'https://github.com/tw-cde/jersey-mongo-init.git'
+tags:
+    - "java"
+languages:
+  - name: "java"
+    version: "1.8"
+frameworks:
+  - name: "jersey"
+    version: "2.17"
+  - name: "mybatis"
+    version: "3.3"
+tools:
+  - name: "gradle"
+    version: "2.8"
+services:
+  web:
+    build:
+      image: 'hub.deepi.cn/jersey-mongo-build'
+      mem: 512
+      cpus: 0.5
+    verify:
+      image: 'hub.deepi.cn/jersey-mongo-verify'
+      mem: 512
+      cpus: 0.2
+    main: yes
+    mem: 512
+    cpus: 0.2
+    instances: 1
+    links:
+      - mongodb
+    expose: 8088
+    environment:
+      MONGODB_PASS: "mypass"
+      MONGODB_USER: "admin"
+      MONGODB_DATABASE: "mongodb_store"
+    health:
+      - protocol: "TCP"
+        portIndex: 0
+        interval: 5
+        timeout: 5
+        grace: 10
+        maxConsecutiveFailures: 10
+  mongodb:
+    mem: 512
+    instances: 1
+    cpus: 0.2
+    image: "tutum/mongodb"
+    environment:
+      MONGODB_PASS: "mypass"
+      MONGODB_USER: "admin"
+      MONGODB_DATABASE: "mongodb_store"
+    expose: 27017
+    volumes:
+      - mongo:/var/lib/mongodb
+    health:
+      - protocol: "TCP"
+        portIndex: 0
+        interval: 5
+        timeout: 5
+        grace: 10
+        maxConsecutiveFailures: 10
