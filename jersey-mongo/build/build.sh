@@ -6,7 +6,6 @@
 # CACHE_DIR: build image 可以使用这个目录来缓存build过程中的文件,比如maven的jar包,用来加速整个build流程
 # IMAGE:     build 成功之后image的名称
 
-set -x
 set -eo pipefail
 
 
@@ -45,7 +44,7 @@ on_exit() {
             echo "Cleaning ..."
             echo > process.log
             docker stop $MONGODB_CONTAINER 2>&1 &>process.log
-            docker rm $MYSQL_CONTAINER 2>&1 &>process.log
+            docker rm $MONGODB_CONTAINER  2>&1 &>process.log
             echo "Cleaning complete"
             echo
     fi
