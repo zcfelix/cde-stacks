@@ -1,5 +1,7 @@
 FROM hub.deepi.cn/gradle:0.1
 
+RUN apk add --no-cache --update git
+
 ENTRYPOINT ["./build.sh"]
 
 # 由于需要在 build 中将应用代码构建为一个 docker image，因此需要在 docker container 中
@@ -12,5 +14,3 @@ RUN curl -sjkSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-$DOCKER_VER
 
 ADD build.sh build.sh
 RUN chmod a+x build.sh
-
-RUN apk add --no-cache --update git

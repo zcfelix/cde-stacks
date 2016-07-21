@@ -6,33 +6,50 @@
 # CACHE_DIR: build image 可以使用这个目录来缓存build过程中的文件,比如maven的jar包,用来加速整个build流程
 # IMAGE:     build 成功之后image的名称
 
+set -x
 set -eo pipefail
+
+
+puts_red() {
+    echo $'\033[0;31m'"      $@" $'\033[0m'
+}
+
+puts_red_f() {
+  while read data; do
+    echo $'\033[0;31m'"      $data" $'\033[0m'
+  done
+}
+
+puts_green() {
+  echo $'\033[0;32m'"      $@" $'\033[0m'
+}
+
+puts_step() {
+  echo $'\033[0;34m'" -----> $@" $'\033[0m'
+}
 
 on_exit() {
     last_status=$?
+    result=0
     if [ "$last_status" != "0" ]; then
         if [ -f "process.log" ]; then
           cat process.log
         fi
-
-        if [ -n "$MYSQL_CONTAINER" ]; then
-            echo
-            echo "Cleaning ..."
-            docker stop $MYSQL_CONTAINER &>process.log && docker rm $MYSQL_CONTAINER &>process.log
-            echo "Cleaning complete"
-            echo
-        fi
-        exit 1;
+        result=1
     else
-        if [ -n "$MYSQL_CONTAINER" ]; then
+        result=0
+    fi
+
+    if [ -n "$MONGODB_CONTAINER" ]; then
             echo
             echo "Cleaning ..."
-            docker stop $MYSQL_CONTAINER &>process.log && docker rm $MYSQL_CONTAINER &>process.log
+            echo > process.log
+            docker stop $MONGODB_CONTAINER 2>&1 &>process.log
+            docker rm $MYSQL_CONTAINER 2>&1 &>process.log
             echo "Cleaning complete"
             echo
-        fi
-        exit 0;
     fi
+    exit $result
 }
 
 trap on_exit HUP INT TERM QUIT ABRT EXIT
@@ -42,28 +59,33 @@ trap on_exit HUP INT TERM QUIT ABRT EXIT
 HOST_IP=$(ip route|awk '/default/ { print $3 }')
 
 echo
+export MONGODB_USER=admin
+export MONGODB_PASS=mongo
+export MONGODB_DATABASE=testdb
 puts_step "Launching baking services ..."
-MONGODB_CONTAINER=$(docker run -d -P -e MONGODB_PASS=$MONGODB_PASS -e MONGODB_USER=$MONGODB_USER -e MONGODB_DATABASE=$MONGODB_DATABASE tutum/mongodb)
+MONGODB_CONTAINER=$(docker run -d -P -e MONGODB_USER=$MONGODB_USER -e MONGODB_PASS=$MONGODB_PASS -e MONGODB_DATABASE=$MONGODB_DATABASE tutum/mongodb)
 MONGODB_PORT=$(docker inspect -f '{{(index (index .NetworkSettings.Ports "27017/tcp") 0).HostPort}}' ${MONGODB_CONTAINER})
-until docker exec $MONGODB_CONTAINER mongo $MONGO_NAME --host 127.0.0.1 --port $MONGODB_PORT -u $MONGODB_USER -p $MONGODB_PASS --eval "ls()" &>/dev/null ; do
+until docker run --rm --entrypoint=sh --net=host tutum/mongodb -c "mongo $MONGODB_DATABASE --host 127.0.0.1 --port $MONGODB_PORT -u $MONGODB_USER -p $MONGODB_PASS --eval 'ls()'" &>/dev/null ; do
     echo "...."
     sleep 1
 done
 
 export MONGODB_HOST=$HOST_IP
 export MONGODB_PORT=$MONGODB_PORT
-echo "Complete Launching baking services"
+puts_step "Complete Launching baking services"
 echo
 
 cd $CODEBASE
 
 echo
 echo "Start test ..."
+echo > process.log
 GRADLE_USER_HOME="$CACHE_DIR" gradle clean test -i &> process.log
 echo "Test complete"
 echo
 
 echo "Start generate standalone ..."
+echo > process.log
 GRADLE_USER_HOME="$CACHE_DIR" gradle standaloneJar &>process.log
 echo "Generate standalone Complete"
 
@@ -90,15 +112,12 @@ ADD build/libs/app-standalone.jar app-standalone.jar
 ADD wrapper.sh wrapper.sh
 RUN chmod +x wrapper.sh
 ENV APP_NAME \$APP_NAME
-
-ADD src/main/resources/db/migration dbmigration
-COPY src/main/resources/db/init initmigration
-
 EOF
 ) > Dockerfile
 
 echo
 echo "Building image $IMAGE ..."
-docker build -q -t $IMAGE . &>process.log
+echo > process.log
+docker build -t $IMAGE . 2>&1 &>process.log
 echo "Building image $IMAGE complete "
 echo
