@@ -21,12 +21,13 @@ trap on_exit HUP INT TERM QUIT ABRT EXIT
 
 export ENTRYPOINT=http://$ENDPOINT
 
-CODEBASE_DIR=$CODEBASE
+cd $CODEBASE
 
-cd $CODEBASE_DIR
+ENDPOINT_HOST=$(echo $LAMBDA|jq --raw-output '.services.main.endpoint.internal.host')
+ENDPOINT_PORT=$(echo $LAMBDA|jq --raw-output '.services.main.endpoint.internal.port')
 
 echo
 echo "Run verify ..."
-curl $ENTRYPOINT
+curl http://${ENDPOINT_HOST}:${ENDPOINT_PORT}
 echo "Run verify complete"
 echo

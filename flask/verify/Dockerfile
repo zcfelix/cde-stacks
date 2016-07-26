@@ -3,7 +3,7 @@ FROM alpine:3.3
 ENTRYPOINT ["./verify.sh"]
 
 RUN apk update && apk upgrade && apk --update add \
-    libstdc++ tzdata bash curl
+    libstdc++ tzdata bash curl jq
 
 RUN apk add --no-cache python && \
     python -m ensurepip && \
