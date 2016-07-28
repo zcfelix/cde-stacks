@@ -58,7 +58,7 @@ bundle install
 
 echo
 puts_step "Run verify ..."
-# bundle exec rake itest
+bundle exec rake itest
 # cd features && bundle exec rspec spec --require ./custom_formatter.rb --format CustomFormatter --format documentation
 puts_step "Run verify complete"
 echo
