@@ -1,6 +1,6 @@
 FROM ruby:2.3
 
-ENTRYPOINT ["./build.sh"]
+ENTRYPOINT ["./verify.sh"]
 
 ENV DOCKER_BUCKET get.docker.com
 ENV DOCKER_VERSION 1.9.1
