@@ -32,5 +32,5 @@ RUN bundle config --global build.nokogiri  "--use-system-libraries" && \
     rm -rf /usr/lib/lib/ruby/gems/*/cache/* && \
     rm -rf ~/.gem
 
-ADD build.sh build.sh
-RUN chmod a+x build.sh
+ADD verify.sh verify.sh
+RUN chmod a+x verify.sh
