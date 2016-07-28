@@ -7,3 +7,6 @@
 [submodule "jersey-mongo/template"]
 	path = jersey-mongo/template
 	url = https://github.com/tw-cde/jersey-mongo-init.git
+[submodule "rails-mongodb/template"]
+	path = rails-mongodb/template
+	url = https://github.com/aisensiy/rails-with-mongoid-template
