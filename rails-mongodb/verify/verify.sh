@@ -49,17 +49,16 @@ on_exit() {
 
 trap on_exit HUP INT TERM QUIT ABRT EXIT
 
-export ENTRYPOINT=http://$ENDPOINT
-
-CODEBASE_DIR=$CODEBASE
-HOST_IP=$(ip route|awk '/default/ { print $3 }')
-
-cd $CODEBASE_DIR
+cd $CODEBASE
+ENDPOINT_HOST=$(echo $LAMBDA|jq --raw-output '.services.web.endpoint.internal.host')
+ENDPOINT_PORT=$(echo $LAMBDA|jq --raw-output '.services.web.endpoint.internal.port')
+export ENDPOINT="http://$ENDPOINT_HOST:$ENDPOINT_PORT" GRADLE_USER_HOME="$CACHE_DIR" gradle itest
 
 bundle install
 
 echo
 puts_step "Run verify ..."
-cd features && bundle exec rspec spec --require ./custom_formatter.rb --format CustomFormatter --format documentation
+# bundle exec rake itest
+# cd features && bundle exec rspec spec --require ./custom_formatter.rb --format CustomFormatter --format documentation
 puts_step "Run verify complete"
 echo

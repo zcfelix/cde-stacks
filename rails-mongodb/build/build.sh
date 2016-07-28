@@ -93,29 +93,7 @@ puts_step "Test complete"
 echo
 
 (cat << EOF
-FROM hub.deepi.cn/synapse:0.1
-
-RUN apk update && apk upgrade && apk --update add \
-    ruby ruby-irb ruby-rake ruby-io-console ruby-bigdecimal \
-    libstdc++ tzdata bash
-
-RUN echo 'gem: --no-rdoc --no-ri' > /etc/gemrc
-RUN gem install bundler \
-    && rm -r /root/.gem \
-    && find / -name '*.gem' | xargs rm
-
-RUN apk --update add --virtual build-dependencies build-base ruby-dev openssl-dev \
-    libxml2-dev libxslt-dev \
-    libc-dev linux-headers
-
-RUN gem install -N nokogiri -- --use-system-libraries
-    # cleanup and settings
-RUN bundle config --global build.nokogiri  "--use-system-libraries" && \
-    bundle config --global build.nokogumbo "--use-system-libraries" && \
-    find / -type f -iname \*.apk-new -delete && \
-    rm -rf /var/cache/apk/* && \
-    rm -rf /usr/lib/lib/ruby/gems/*/cache/* && \
-    rm -rf ~/.gem
+FROM ruby:2.3-onbuild
 
 ADD . /app
 
