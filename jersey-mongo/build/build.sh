@@ -97,7 +97,7 @@ until nc -z -w 5 $MONGODB_HOST $MONGODB_PORT; do
     sleep 1
 done
 
-java -jar app-standalone.jar
+java -Xmx450m -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -jar app-standalone.jar
 EOF
 ) > wrapper.sh
 
