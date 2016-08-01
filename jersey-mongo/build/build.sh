@@ -64,7 +64,7 @@ export MONGODB_DATABASE=testdb
 puts_step "Launching baking services ..."
 MONGODB_CONTAINER=$(docker run -d -P -e MONGODB_USER=$MONGODB_USER -e MONGODB_PASS=$MONGODB_PASS -e MONGODB_DATABASE=$MONGODB_DATABASE tutum/mongodb)
 MONGODB_PORT=$(docker inspect -f '{{(index (index .NetworkSettings.Ports "27017/tcp") 0).HostPort}}' ${MONGODB_CONTAINER})
-until docker run --rm --entrypoint=sh --net=host tutum/mongodb -c "mongo $MONGODB_DATABASE --host 127.0.0.1 --port $MONGODB_PORT -u $MONGODB_USER -p $MONGODB_PASS --eval 'ls()'" &>/dev/null ; do
+until docker exec $MONGODB_CONTAINER mongo $MONGODB_DATABASE --host 127.0.0.1 --port 27017 -u $MONGODB_USER -p $MONGODB_PASS --eval "ls()" &>/dev/null ; do
     echo "...."
     sleep 1
 done
