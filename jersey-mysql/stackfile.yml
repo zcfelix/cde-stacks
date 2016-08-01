@@ -64,7 +64,7 @@ services:
     health:
       - protocol: "TCP"
         portIndex: 0
-        interval: 3
-        timeout: 2
+        interval: 5
+        timeout: 5
         grace: 120
-        maxConsecutiveFailures: 2
+        maxConsecutiveFailures: 10
