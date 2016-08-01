@@ -29,7 +29,9 @@ services:
     environment:
       SERVICE_PORT: 80
     health:
-      - protocol: "COMMAND"
-        command: "exit 0"
-        interval: "3"
-        timeout: "2"
+      - protocol: "TCP"
+        portIndex: 0
+        interval: 5
+        timeout: 5
+        grace: 120
+        maxConsecutiveFailures: 10

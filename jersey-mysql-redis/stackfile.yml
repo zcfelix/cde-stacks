@@ -76,8 +76,10 @@ services:
     volumes:
       - redis:/data
     health:
-      - protocol: "COMMAND"
-        interval: "3"
-        timeout: "2"
-        command: "exit 0"
+      - protocol: "TCP"
+        portIndex: 0
+        interval: 5
+        timeout: 5
+        grace: 120
+        maxConsecutiveFailures: 10
 

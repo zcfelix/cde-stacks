@@ -41,10 +41,10 @@ services:
     health:
       - protocol: "TCP"
         portIndex: 0
-        interval: 3
-        timeout: 2
-        grace: 2
-        maxConsecutiveFailures: 2
+        interval: 5
+        timeout: 5
+        grace: 120
+        maxConsecutiveFailures: 10
   db:
     mem: 512
     instances: 1
@@ -66,5 +66,5 @@ services:
         portIndex: 0
         interval: 3
         timeout: 2
-        grace: 2
+        grace: 120
         maxConsecutiveFailures: 2
