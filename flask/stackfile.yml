@@ -25,6 +25,8 @@ services:
     cpus: 0.2
     instances: 1
     expose: 5000
+    environment:
+      SERVICE_PORT: 5000
     volumes:
       - db:/data
     health:
