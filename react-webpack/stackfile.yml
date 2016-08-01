@@ -26,6 +26,8 @@ services:
     cpus: 0.1
     instances: 1
     expose: 80
+    environment:
+      SERVICE_PORT: 80
     health:
       - protocol: "COMMAND"
         command: "exit 0"
