@@ -21,11 +21,11 @@ tools:
 services:
   web:
     build:
-      image: 'hub.deepi.cn/javajersey-build'
+      image: 'hub.deepi.cn/jersey-mysql-build'
       mem: 512
       cpus: 0.5
     verify:
-      image: 'hub.deepi.cn/javajersey-verify'
+      image: 'hub.deepi.cn/jersey-mysql-verify'
       mem: 512
       cpus: 0.5
     main: yes
