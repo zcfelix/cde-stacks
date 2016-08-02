@@ -26,7 +26,7 @@ services:
     instances: 1
     expose: 5000
     environment:
-      SERVICE_PORT: 5000
+      SERVICE_PORT: "5000"
     volumes:
       - db:/data
     health:
