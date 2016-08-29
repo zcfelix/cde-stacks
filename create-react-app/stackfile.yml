@@ -25,9 +25,9 @@ services:
     mem: 512
     cpus: 0.1
     instances: 1
-    expose: 9000
+    expose: 80
     environment:
-      SERVICE_PORT: '9000'
+      SERVICE_PORT: '80'
     health:
       - protocol: "TCP"
         portIndex: 0

@@ -44,21 +44,21 @@ CODEBASE_DIR=$CODEBASE
 cd $CODEBASE_DIR
 
 puts_step "Staring install depends ..."
-
+npm install
 puts_step "Start packing ..."
 export NODE_ENV=production
 npm run build
 puts_step "Packing complete"
 
-mkdir /dist
-cp -rf build/* /dist
+mkdir dist
+cp -rf build/* dist/
 
 cp /nginx.conf nginx.conf
 
 cat > run.sh << EOF
 #!/bin/sh
 mkdir -p /etc/nginx/html
-cp -rf /dist/* /etc/nginx/html
+cp -rf /dist/* /etc/nginx/html/
 cd /etc/nginx/html
 find . -name 'main*.js' | xargs -I {} sed -i -e "s#{{API_PREFIX}}#\$API_PREFIX#g" {}
 exec "\$@"
@@ -70,7 +70,7 @@ EXPOSE 80
 ADD run.sh run.sh
 ADD nginx.conf /etc/nginx/nginx.conf
 RUN chmod +x run.sh
-ADD /dist /dist
+ADD build /dist
 ENTRYPOINT ["./run.sh"]
 CMD ["nginx", "-g", "daemon off;"]
 EOF
