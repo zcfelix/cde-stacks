@@ -2,8 +2,11 @@ FROM hub.deepi.cn/gradle:0.1
 
 RUN apk --update add gcc jq
 
-ENTRYPOINT ["./verify.sh"]
+ENTRYPOINT ["verify.sh"]
 
-WORKDIR /home
-ADD verify.sh verify.sh
-RUN chmod a+x verify.sh
+RUN curl -sjkSL "https://github.com/tw-cde/cde-client-binary/releases/download/0.1.4/lambda" -o /bin/lambda
+
+COPY rootfs /
+
+RUN chmod -R +x /bin/
+
