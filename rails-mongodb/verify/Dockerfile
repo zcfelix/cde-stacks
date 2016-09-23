@@ -1,14 +1,12 @@
 FROM ruby:2.3
 
-ENTRYPOINT ["./verify.sh"]
-
-ENV DOCKER_BUCKET get.docker.com
-ENV DOCKER_VERSION 1.9.1
-RUN curl -sjkSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-$DOCKER_VERSION" -o /usr/bin/docker \
-	&& chmod +x /usr/bin/docker
+ENTRYPOINT ["verify.sh"]
 
 RUN curl -jksSL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 -o /usr/local/bin/jq && \
     chmod +x /usr/local/bin/jq
 
-ADD verify.sh verify.sh
-RUN chmod a+x verify.sh
+RUN curl -sjkSL "https://github.com/tw-cde/cde-client-binary/releases/download/0.1.4/lambda" -o /bin/lambda
+
+COPY rootfs /
+
+RUN chmod -R +x /bin/
