@@ -21,7 +21,14 @@ on_exit() {
     fi
 
     if [ "$LAMBDA_URI" != "" ]; then
+        echo "Clean lambda env..."
         lambda deprovision --lambda-uri "$LAMBDA_URI"
+        clean_status=$?
+        if [ "$clean_status" != "0" ]; then
+            echo "Clean lambda env fail"
+        else
+            echo "Clean lambda env success"
+        fi
     fi
 
     trap - HUP INT TERM QUIT ABRT EXIT
