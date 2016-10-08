@@ -41,13 +41,13 @@ trap on_exit HUP INT TERM QUIT ABRT EXIT
 
 HOST_IP=$(ip route|awk '/default/ { print $3 }')
 
-export DB_USERNAME=mysql
-export DB_PASSWORD=mysql
-export DB_NAME=testdb
+export DB_MYSQL_USER=mysql
+export DB_MYSQL_PASS=mysql
+export DB_ON_CREATE_DB=testdb
 
 echo
 echo "Launching baking services ..."
-MYSQL_CONTAINER=$(docker run -d -P -e MYSQL_USER=$DB_USERNAME -e MYSQL_PASS=$DB_PASSWORD -e ON_CREATE_DB=$DB_NAME -e MYSQL_ROOT_PASSWORD=$DB_PASSWORD tutum/mysql)
+MYSQL_CONTAINER=$(docker run -d -P -e MYSQL_USER=$DB_MYSQL_USER -e MYSQL_PASS=$DB_MYSQL_PASS -e ON_CREATE_DB=$DB_ON_CREATE_DB -e MYSQL_ROOT_PASSWORD=$DB_MYSQL_PASS tutum/mysql)
 MYSQL_PORT=$(docker inspect -f '{{(index (index .NetworkSettings.Ports "3306/tcp") 0).HostPort}}' ${MYSQL_CONTAINER})
 until docker exec $MYSQL_CONTAINER mysql -h127.0.0.1 -P3306 -umysql -pmysql -e "select 1" &>/dev/null ; do
     echo "...."
@@ -87,7 +87,7 @@ until nc -z -w 5 $DB_HOST $DB_PORT; do
     sleep 1
 done
 
-export DATABASE="jdbc:mysql://$DB_HOST:$DB_PORT/$DB_NAME?user=$DB_USERNAME&password=$DB_PASSWORD&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&createDatabaseIfNotExist=true"
+export DATABASE="jdbc:mysql://$DB_HOST:$DB_PORT/$DB_NAME?user=$DB_MYSQL_USER&password=$DB_MYSQL_PASS&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&createDatabaseIfNotExist=true"
 flyway migrate -url="$DATABASE" -locations=filesystem:`pwd`/dbmigration -baselineOnMigrate=true -baselineVersion=0
 [ -d `pwd`/initmigration  ] && flyway migrate -url="$DATABASE" -locations=filesystem:`pwd`/initmigration -table="init_version" -baselineOnMigrate=true -baselineVersion=0
 java -Xmx450m -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -jar app-standalone.jar
