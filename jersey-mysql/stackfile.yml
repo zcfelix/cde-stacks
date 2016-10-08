@@ -35,9 +35,6 @@ services:
     expose: 8088
     environment:
       SERVICE_PORT: '8088'
-      DB_NAME: 'data_store'
-      DB_USERNAME: 'mysql'
-      DB_PASSWORD: 'mysql'
     health:
       - protocol: "TCP"
         portIndex: 0
@@ -55,7 +52,6 @@ services:
       MYSQL_USER: "mysql"
       MYSQL_PASS: "mysql"
       ON_CREATE_DB: "data_store"
-      MYSQL_PASSWORD: "mysql"
       MYSQL_DATABASE: "data_store"
       EXTRA_OPTS: "--lower_case_table_names=1"
     expose: 3306
