@@ -1,4 +1,4 @@
-name: "rails-mongodb"
+name: "rails-mongo"
 description: "A rails app with mongodb"
 template:
   type: "git"
