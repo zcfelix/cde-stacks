@@ -56,8 +56,6 @@ on_exit() {
 
 trap on_exit HUP INT TERM QUIT ABRT EXIT
 
-HOST_IP=$(ip route|awk '/default/ { print $3 }')
-
 cd $CODEBASE
 
 puts_step "Start to verify..."

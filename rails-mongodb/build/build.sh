@@ -50,7 +50,6 @@ on_exit() {
 trap on_exit HUP INT TERM QUIT ABRT EXIT
 
 CODEBASE_DIR=$CODEBASE
-HOST_IP=$(ip route|awk '/default/ { print $3 }')
 
 export MONGO_MONGODB_USER=admin
 export MONGO_MONGODB_PASS=mongo
@@ -65,7 +64,7 @@ until docker exec $MONGO_CONTAINER mongo $MONGO_MONGODB_DATABASE --host 127.0.0.
     sleep 1
 done
 
-export MONGO_HOST=$HOST_IP
+export MONGO_HOST=$HOST
 export MONGO_PORT=$MONGO_PORT
 
 puts_step "Complete Launching baking services"

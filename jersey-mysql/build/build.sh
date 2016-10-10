@@ -39,8 +39,6 @@ trap on_exit HUP INT TERM QUIT ABRT EXIT
 
 # 在将 java 打包为 jar 之前首先执行项目的单元测试，那么在执行测试之前需要安装单元测试所依赖的数据
 
-HOST_IP=$(ip route|awk '/default/ { print $3 }')
-
 export DB_MYSQL_USER=mysql
 export DB_MYSQL_PASS=mysql
 export DB_ON_CREATE_DB=testdb
@@ -54,7 +52,7 @@ until docker exec $MYSQL_CONTAINER mysql -h127.0.0.1 -P3306 -umysql -pmysql -e "
     sleep 1
 done
 
-export DB_HOST=$HOST_IP
+export DB_HOST=$HOST
 export DB_PORT=$MYSQL_PORT
 
 echo "Complete Launching baking services"

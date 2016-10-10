@@ -55,8 +55,6 @@ trap on_exit HUP INT TERM QUIT ABRT EXIT
 
 # 在将 java 打包为 jar 之前首先执行项目的单元测试，那么在执行测试之前需要安装单元测试所依赖的数据
 
-HOST_IP=$(ip route|awk '/default/ { print $3 }')
-
 echo
 export MONGODB_MONGODB_USER=admin
 export MONGODB_MONGODB_PASS=mongo
@@ -69,7 +67,7 @@ until docker exec $MONGODB_CONTAINER mongo $MONGODB_MONGODB_DATABASE --host 127.
     sleep 1
 done
 
-export MONGODB_HOST=$HOST_IP
+export MONGODB_HOST=$HOST
 export MONGODB_PORT=$MONGODB_PORT
 puts_step "Complete Launching baking services"
 echo
