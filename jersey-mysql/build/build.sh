@@ -85,7 +85,7 @@ until nc -z -w 5 $DB_HOST $DB_PORT; do
     sleep 1
 done
 
-export DATABASE="jdbc:mysql://$DB_HOST:$DB_PORT/$DB_NAME?user=$DB_MYSQL_USER&password=$DB_MYSQL_PASS&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&createDatabaseIfNotExist=true"
+export DATABASE="jdbc:mysql://$DB_HOST:$DB_PORT/$DB_ON_CREATE_DB?user=$DB_MYSQL_USER&password=$DB_MYSQL_PASS&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&createDatabaseIfNotExist=true"
 flyway migrate -url="$DATABASE" -locations=filesystem:`pwd`/dbmigration -baselineOnMigrate=true -baselineVersion=0
 [ -d `pwd`/initmigration  ] && flyway migrate -url="$DATABASE" -locations=filesystem:`pwd`/initmigration -table="init_version" -baselineOnMigrate=true -baselineVersion=0
 java -Xmx450m -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -jar app-standalone.jar

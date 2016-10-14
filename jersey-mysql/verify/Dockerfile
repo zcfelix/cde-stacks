@@ -4,7 +4,7 @@ RUN apk --update add gcc jq
 
 ENTRYPOINT ["verify.sh"]
 
-RUN curl -sjkSL "https://github.com/tw-cde/cde-client-binary/releases/download/0.1.4/lambda" -o /bin/lambda
+RUN curl -sjkSL "https://github.com/tw-cde/cde-client-binary/releases/download/0.1.5/lambda" -o /bin/lambda
 
 COPY rootfs /
 
