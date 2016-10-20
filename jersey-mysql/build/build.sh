@@ -45,7 +45,7 @@ export DB_ON_CREATE_DB=testdb
 
 echo
 echo "Launching baking services ..."
-MYSQL_CONTAINER=$(docker run -d -P -e MYSQL_USER=$DB_MYSQL_USER -e MYSQL_PASS=$DB_MYSQL_PASS -e ON_CREATE_DB=$DB_ON_CREATE_DB -e MYSQL_ROOT_PASSWORD=$DB_MYSQL_PASS tutum/mysql)
+MYSQL_CONTAINER=$(docker run -d -P -e EXTRA_OPS="--lower_case_table_names=1" -e MYSQL_USER=$DB_MYSQL_USER -e MYSQL_PASS=$DB_MYSQL_PASS -e ON_CREATE_DB=$DB_ON_CREATE_DB -e MYSQL_ROOT_PASSWORD=$DB_MYSQL_PASS tutum/mysql)
 MYSQL_PORT=$(docker inspect -f '{{(index (index .NetworkSettings.Ports "3306/tcp") 0).HostPort}}' ${MYSQL_CONTAINER})
 until docker exec $MYSQL_CONTAINER mysql -h127.0.0.1 -P3306 -umysql -pmysql -e "select 1" &>/dev/null ; do
     echo "...."
