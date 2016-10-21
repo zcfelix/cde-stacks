@@ -35,12 +35,12 @@ LAMBDA_URI=$(lambda provision --build-uri "$BUILD_URI")
 echo "Launch lambda success"
 cd $CODEBASE
 LAMBDA_INFO=$(lambda info --lambda-uri $LAMBDA_URI)
-ENDPOINT_HOST=$(echo $LAMBDA_INFO|jq --raw-output '.services.web.endpoint.internal.host')
-ENDPOINT_PORT=$(echo $LAMBDA_INFO|jq --raw-output '.services.web.endpoint.internal.port')
+ENDPOINT_HOST=$(echo $LAMBDA_INFO|jq --raw-output '.services.main.endpoint.internal.host')
+ENDPOINT_PORT=$(echo $LAMBDA_INFO|jq --raw-output '.services.main.endpoint.internal.port')
 
 
 echo
 echo "Run verify ..."
-curl http://${ENDPOINT_HOST}:${ENDPOINT_PORT}
+curl http://$ENDPOINT_HOST:$ENDPOINT_PORT
 echo "Run verify complete"
 echo
