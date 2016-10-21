@@ -41,6 +41,6 @@ ENDPOINT_PORT=$(echo $LAMBDA_INFO|jq --raw-output '.services.main.endpoint.inter
 
 echo
 echo "Run verify ..."
-curl http://$ENDPOINT_HOST:$ENDPOINT_PORT
+# curl http://$ENDPOINT_HOST:$ENDPOINT_PORT
 echo "Run verify complete"
 echo
