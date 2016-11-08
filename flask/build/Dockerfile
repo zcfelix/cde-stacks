@@ -1,7 +1,5 @@
 FROM python:2.7
 
-RUN apk add --no-cache --update git
-
 ENTRYPOINT ["./build.sh"]
 
 ENV DOCKER_BUCKET get.docker.com
